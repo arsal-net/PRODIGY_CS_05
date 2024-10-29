@@ -1,0 +1,20 @@
+from scapy.all import sniff, IP
+
+def packet_callback(packet):
+    if IP in packet:
+        ip_src = packet[IP].src
+        ip_dst = packet[IP].dst
+
+        # Filter packets to or from 192.168.1.6
+        if ip_src == "192.168.1.6" or ip_dst == "192.168.1.6":
+            proto = packet[IP].proto
+            payload = packet[IP].payload
+
+            print(f"Source IP: {ip_src}")
+            print(f"Destination IP: {ip_dst}")
+            print(f"Protocol: {proto}")
+            print(f"Payload: {payload}")
+            print("-" * 50)
+
+# Sniff packets
+sniff(prn=packet_callback, store=0)
